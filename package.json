@@ -5,5 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-static.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.10",
+    "pg": "^8.23.1"
   }
 }
