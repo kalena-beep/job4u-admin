@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jobs4U.sg — Connecting Talent With Opportunity</title>
+  <meta name="description" content="Jobs4U helps you connect with the right employers in Singapore. Explore tech, retail, and corporate roles from top companies.">
+  <meta name="keywords" content="jobs in singapore, tech jobs singapore, luxury retail jobs, remote jobs singapore, recruitment platform">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://jobs4u.sg/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jobs4u.sg/">
+  <meta property="og:title" content="Jobs4U.sg — Connecting Talent With Opportunity">
+  <meta property="og:description" content="Jobs4U helps you connect with the right employers in Singapore. Explore tech, retail, and corporate roles from top companies.">
+  <meta property="og:image" content="https://jobs4u.sg/logo-new.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://jobs4u.sg/">
+  <meta property="twitter:title" content="Jobs4U.sg — Connecting Talent With Opportunity">
+  <meta property="twitter:description" content="Jobs4U helps you connect with the right employers in Singapore. Explore tech, retail, and corporate roles from top companies.">
+  <meta property="twitter:image" content="https://jobs4u.sg/logo-new.jpg">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Jobs4U",
+    "url": "https://jobs4u.sg",
+    "logo": "https://jobs4u.sg/logo-new.jpg",
+    "description": "Jobs4U helps you connect with the right employers in Singapore.",
+    "sameAs": []
+  }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#032C6D',
+            'primary-dark': '#021F4D',
+            secondary: '#FB8406',
+            cta: '#FB8406',
+            'cta-hover': '#E57605',
+            accent: '#2EA530',
+            surface: '#F5F7FA',
+            'text-primary': '#0F172A',
+            'text-muted': '#3A3A3A',
+            'text-light': '#64748B',
+            border: '#E2E8F0',
+            dark: '#032C6D',
+          },
+          fontFamily: {
+            heading: ['Poppins', 'sans-serif'],
+            body: ['Open Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Open Sans', sans-serif; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-gradient {
+      background: linear-gradient(270deg, #021F4D, #032C6D, #0A4A8A, #032C6D);
+      background-size: 400% 400%;
+      animation: gradient-shift 10s ease infinite;
+    }
+    @keyframes hero-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-16px); }
+    }
+    .hero-float { animation: hero-float 4s ease-in-out infinite; }
+    .hero-text-in { animation: fade-in-up 0.8s ease both; }
+    .hero-text-in-d1 { animation: fade-in-up 0.8s ease 0.15s both; }
+    .hero-text-in-d2 { animation: fade-in-up 0.8s ease 0.3s both; }
+    .hero-text-in-d3 { animation: fade-in-up 0.8s ease 0.45s both; }
+    .hero-text-in-d4 { animation: fade-in-up 0.8s ease 0.6s both; }
+    .hero-img-in { animation: fade-in-up 1s ease 0.4s both; }
+
+    .card-hover {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(3, 44, 109, 0.12);
+    }
+
+    .btn-primary {
+      background-color: #FB8406;
+      color: white;
+      transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #E57605;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(251,132,6,0.35);
+    }
+    .btn-primary:active { transform: scale(0.98); }
+
+    /* Fullscreen image lightbox */
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      cursor: zoom-out;
+    }
+    .lightbox-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-overlay img {
+      max-width: 92vw;
+      max-height: 92vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.3); }
+    .poster-img-click { cursor: zoom-in; }
+
+    .btn-outline {
+      border: 2px solid #FB8406;
+      color: #FB8406;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .btn-outline:hover {
+      background-color: #FB8406;
+      color: white;
+    }
+
+    .mobile-menu { display: none; }
+    .mobile-menu.active { display: flex; }
+
+    /* CTA section animations */
+    @keyframes float-slow {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -20px) scale(1.05); }
+      66% { transform: translate(-20px, 15px) scale(0.95); }
+    }
+    @keyframes float-reverse {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(-25px, 20px) scale(0.96); }
+      66% { transform: translate(15px, -25px) scale(1.04); }
+    }
+    @keyframes float-diagonal {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, -30px); }
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.3; }
+      50% { transform: scale(1.15); opacity: 0.1; }
+      100% { transform: scale(1); opacity: 0.3; }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes btn-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.3); }
+      50% { box-shadow: 0 0 20px 4px rgba(255,255,255,0.15); }
+    }
+
+    .cta-gradient {
+      background: linear-gradient(270deg, #021F4D, #032C6D, #0A4A8A, #032C6D, #021F4D);
+      background-size: 400% 400%;
+      animation: gradient-shift 8s ease infinite;
+    }
+    .orb { border-radius: 50%; position: absolute; pointer-events: none; }
+    .orb-1 { animation: float-slow 7s ease-in-out infinite; }
+    .orb-2 { animation: float-reverse 9s ease-in-out infinite; }
+    .orb-3 { animation: float-diagonal 11s ease-in-out infinite; }
+    .orb-4 { animation: pulse-ring 5s ease-in-out infinite; }
+    .orb-5 { animation: float-slow 13s ease-in-out infinite; }
+
+    .cta-title {
+      background: linear-gradient(90deg, #fff 0%, #fff 40%, #FB8406 50%, #fff 60%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    .animated-gradient-primary {
+      background: linear-gradient(90deg, #032C6D, #084090, #032C6D);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    .animated-gradient-secondary {
+      background: linear-gradient(90deg, #FB8406, #FFA03A, #FB8406);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    .animated-gradient-accent {
+      background: linear-gradient(90deg, #2EA530, #3ECA41, #2EA530);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    .animated-gradient-dark {
+      background: linear-gradient(90deg, #0F172A, #29384E, #0F172A);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    .cta-animate-in { animation: fade-in-up 0.7s ease both; }
+    .cta-animate-in-delay { animation: fade-in-up 0.7s ease 0.2s both; }
+    .cta-animate-in-delay2 { animation: fade-in-up 0.7s ease 0.4s both; }
+    .cta-btn-glow { animation: btn-glow 3s ease-in-out infinite; }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* ===== GLOBAL ANIMATIONS ===== */
+
+    /* Navbar slide down */
+    @keyframes slide-down {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .nav-animate { animation: slide-down 0.6s ease both; }
+
+    /* Staggered fade-up with delays */
+    .fade-up-d1 { transition-delay: 0.1s; }
+    .fade-up-d2 { transition-delay: 0.2s; }
+    .fade-up-d3 { transition-delay: 0.3s; }
+    .fade-up-d4 { transition-delay: 0.4s; }
+
+    /* Fade in from left / right */
+    .fade-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-left.visible, .fade-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Scale in */
+    .scale-in {
+      opacity: 0;
+      transform: scale(0.85);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .scale-in.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Icon bounce on reveal */
+    @keyframes icon-bounce {
+      0% { transform: scale(0) rotate(-15deg); }
+      50% { transform: scale(1.2) rotate(5deg); }
+      70% { transform: scale(0.9) rotate(-2deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    .icon-bounce.visible { animation: icon-bounce 0.6s ease both; }
+
+    /* Image zoom on hover */
+    .img-zoom { transition: transform 0.4s ease; }
+    .img-zoom:hover { transform: scale(1.05); }
+    .step-media {
+      background: #F8FAFC;
+    }
+    .step-media img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Counter count-up (handled by JS, this is the style) */
+    .counter-num { display: inline-block; }
+
+    /* Section heading underline draw */
+    @keyframes draw-line {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+    .section-line {
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: #FB8406;
+      margin: 12px auto 0;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.6s ease;
+    }
+    .section-line.visible { transform: scaleX(1); }
+
+    /* Tag pills slide in */
+    .tag-slide {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .tag-slide.visible { opacity: 1; transform: translateY(0); }
+
+    /* WhatsApp FAB entrance */
+    @keyframes fab-bounce-in {
+      0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+      60% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+      80% { transform: scale(0.9) rotate(-2deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    @keyframes fab-pulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.3); }
+      50% { box-shadow: 0 4px 30px rgba(37,211,102,0.55); }
+    }
+    .fab-animate {
+      animation: fab-bounce-in 0.8s ease 1s both, fab-pulse 2.5s ease-in-out 2s infinite;
+    }
+
+    /* Footer stagger */
+    .footer-col {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .footer-col.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Button ripple on click */
+    .btn-ripple { position: relative; overflow: hidden; }
+    .btn-ripple::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+      transform: scale(0);
+      opacity: 0;
+      transition: transform 0.4s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .btn-ripple:active::after {
+      transform: scale(2.5);
+      opacity: 1;
+      transition: transform 0s, opacity 0s;
+    }
+
+    /* ===== SHINE / GLOW / FLOAT / SHADOW ANIMATIONS ===== */
+
+    /* Shine sweep on buttons */
+    @keyframes shine-sweep {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
+    .btn-shine { position: relative; overflow: hidden; }
+    .btn-shine::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: skewX(-20deg);
+      pointer-events: none;
+    }
+    .btn-shine:hover::before {
+      animation: shine-sweep 0.6s ease;
+    }
+
+    /* Continuous subtle glow on CTA buttons */
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 4px 15px rgba(251,132,6,0.25); }
+      50% { box-shadow: 0 8px 30px rgba(251,132,6,0.45); }
+    }
+    .btn-glow-orange {
+      animation: glow-pulse 3s ease-in-out infinite;
+    }
+
+    /* Card float animation (gentle hover) */
+    @keyframes card-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .card-float {
+      animation: card-float 4s ease-in-out infinite;
+    }
+
+    /* Card shimmer border on hover */
+    @keyframes border-shimmer {
+      0% { border-color: #E2E8F0; }
+      25% { border-color: #FB8406; }
+      50% { border-color: #2EA530; }
+      75% { border-color: #032C6D; }
+      100% { border-color: #E2E8F0; }
+    }
+    .card-hover:hover {
+      animation: border-shimmer 2s ease forwards;
+    }
+
+    /* Glow shadow on poster cards */
+    .card-glow {
+      transition: box-shadow 0.4s ease, transform 0.3s ease;
+    }
+    .card-glow:hover {
+      box-shadow: 0 8px 30px rgba(3,44,109,0.15), 0 0 15px rgba(251,132,6,0.1);
+      transform: translateY(-6px);
+    }
+
+    /* Logo subtle float */
+    @keyframes logo-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    .logo-float {
+      animation: logo-float 3s ease-in-out infinite;
+    }
+
+    /* Section heading text glow */
+    @keyframes text-glow {
+      0%, 100% { text-shadow: 0 0 0px transparent; }
+      50% { text-shadow: 0 0 20px rgba(251,132,6,0.15); }
+    }
+    .text-glow {
+      animation: text-glow 4s ease-in-out infinite;
+    }
+
+    /* Floating background shapes */
+    @keyframes bg-float-1 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(20px, -15px) rotate(5deg); }
+      50% { transform: translate(-10px, -25px) rotate(-3deg); }
+      75% { transform: translate(15px, -10px) rotate(2deg); }
+    }
+    @keyframes bg-float-2 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(-20px, 15px) rotate(-4deg); }
+      66% { transform: translate(15px, -20px) rotate(6deg); }
+    }
+    .bg-shape-float-1 { animation: bg-float-1 8s ease-in-out infinite; }
+    .bg-shape-float-2 { animation: bg-float-2 10s ease-in-out infinite; }
+
+    /* Step card icon glow */
+    @keyframes icon-glow {
+      0%, 100% { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+      50% { box-shadow: 0 4px 20px rgba(251,132,6,0.3); }
+    }
+    .icon-glow {
+      animation: icon-glow 3s ease-in-out infinite;
+    }
+
+    /* Shine sweep on cards */
+    .card-shine { position: relative; overflow: hidden; }
+    .card-shine::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      transform: skewX(-20deg);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .card-shine:hover::after {
+      animation: shine-sweep 0.8s ease;
+    }
+
+    /* Navbar glass shadow */
+    .nav-glow {
+      box-shadow: 0 1px 20px rgba(3,44,109,0.06);
+      transition: box-shadow 0.3s ease;
+    }
+    .nav-glow.scrolled {
+      box-shadow: 0 4px 30px rgba(3,44,109,0.1);
+    }
+
+    /* Footer link underline slide */
+    .footer-link {
+      position: relative;
+    }
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #FB8406;
+      transition: width 0.3s ease;
+    }
+    .footer-link:hover::after {
+      width: 100%;
+    }
+
+    /* Colorful dot divider pulse */
+    @keyframes dot-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.7; }
+    }
+    .dot-pulse span:nth-child(1) { animation: dot-pulse 2s ease-in-out infinite; }
+    .dot-pulse span:nth-child(2) { animation: dot-pulse 2s ease-in-out 0.3s infinite; }
+    .dot-pulse span:nth-child(3) { animation: dot-pulse 2s ease-in-out 0.6s infinite; }
+
+    /* Tilt on hover for step cards */
+    .tilt-hover {
+      transition: transform 0.3s ease;
+    }
+    .tilt-hover:hover {
+      transform: translateY(-8px) rotate(-1deg);
+    }
+
+    /* Subtle parallax-like floating for decorative elements */
+    @keyframes gentle-drift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(10px, -10px); }
+    }
+    .gentle-drift { animation: gentle-drift 6s ease-in-out infinite; }
+  </style>
+</head>
+<body class="bg-white text-text-primary antialiased">
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border nav-animate nav-glow" role="navigation" aria-label="Main navigation">
+    <!-- ============ TRUST SIGNALS BAR ============ -->
+    <div class="bg-primary-dark text-white text-xs font-medium py-1.5 hidden md:block">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center sm:justify-between items-center">
+        <div class="flex space-x-6">
+          <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a.75.75 0 01.673.418l2.128 4.312 4.757.691a.75.75 0 01.415 1.28l-3.443 3.356.813 4.738a.75.75 0 01-1.088.791L10 15.347l-4.255 2.239a.75.75 0 01-1.088-.791l.813-4.738-3.443-3.356a.75.75 0 01.415-1.28l4.757-.691L9.327 2.418A.75.75 0 0110 2z" clip-rule="evenodd"></path></svg> Singapore Recruitment Platform</span>
+          <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Personal Data Protected</span>
+        </div>
+        <div>
+          <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"></path></svg> Hundreds of Candidates Matched</span>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        <!-- Logo -->
+        <a href="#" class="flex items-center cursor-pointer" aria-label="Jobs4U Home">
+          <img src="./logo-new.jpg" alt="Jobs4U.sg" class="h-10 sm:h-12 w-auto logo-float">
+        </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#how-it-works" class="text-text-muted hover:text-primary transition-colors duration-200 text-sm font-medium cursor-pointer">How It Works</a>
+          <a href="#featured" class="text-text-muted hover:text-primary transition-colors duration-200 text-sm font-medium cursor-pointer">Featured Jobs</a>
+          <a href="#all-sections" class="text-text-muted hover:text-primary transition-colors duration-200 text-sm font-medium cursor-pointer">Companies</a>
+          <a href="https://api.whatsapp.com/send?phone=6593752892&text=Hi%2C%20I%20am%20interested%20in%20job%20opportunities" target="_blank" rel="noopener noreferrer" class="btn-primary px-5 py-2.5 rounded-lg font-semibold text-sm cursor-pointer inline-flex items-center gap-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.12 1.522 5.857L.055 23.456a.75.75 0 00.917.918l5.599-1.467A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.958 9.958 0 01-5.383-1.572l-.386-.232-3.327.872.887-3.24-.254-.404A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Contact Us
+          </a>
+        </div>
+
+        <!-- Mobile Hamburger -->
+        <button id="menu-toggle" class="md:hidden p-2 text-text-muted hover:text-primary cursor-pointer" aria-label="Open menu" aria-expanded="false">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu flex-col md:hidden bg-white border-t border-border px-4 pb-4">
+      <a href="#how-it-works" class="py-3 text-text-muted hover:text-primary transition-colors text-sm font-medium cursor-pointer border-b border-border/50">How It Works</a>
+      <a href="#featured" class="py-3 text-text-muted hover:text-primary transition-colors text-sm font-medium cursor-pointer border-b border-border/50">Featured Jobs</a>
+      <a href="#all-sections" class="py-3 text-text-muted hover:text-primary transition-colors text-sm font-medium cursor-pointer border-b border-border/50">Companies</a>
+      <a href="https://api.whatsapp.com/send?phone=6593752892&text=" target="_blank" rel="noopener noreferrer" class="btn-primary mt-3 px-5 py-2.5 rounded-lg font-semibold text-sm text-center cursor-pointer">Contact Us</a>
+    </div>
+  </nav>
+
+
+  <!-- ============ HERO ============ -->
+  <section class="hero-gradient pt-36 sm:pt-44 pb-20 sm:pb-32 relative overflow-hidden">
+    <!-- Floating orbs -->
+    <div class="orb orb-1 w-80 h-80 bg-white/5 top-[-50px] right-[-30px]" aria-hidden="true"></div>
+    <div class="orb orb-2 w-64 h-64 bg-white/[0.04] bottom-[-40px] left-[-20px]" aria-hidden="true"></div>
+    <div class="orb orb-3 w-36 h-36 bg-white/[0.06] top-[30%] left-[8%]" aria-hidden="true"></div>
+    <div class="orb orb-4 w-48 h-48 bg-white/[0.03] bottom-[15%] right-[25%]" aria-hidden="true"></div>
+
+    <!-- Particles -->
+    <div id="hero-particles" class="absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="text-center lg:text-left">
+          <p class="text-white/70 text-sm font-semibold uppercase tracking-widest mb-4 hero-text-in">Singapore's Fast-Growing Recruitment Platform</p>
+          <h1 class="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-4 hero-text-in-d1">
+            Find Your Next Job<br class="hidden sm:block"> in Singapore
+          </h1>
+          <p class="text-secondary font-medium text-lg sm:text-xl mb-6 hero-text-in-d2">Luxury Retail • Technology • Remote Opportunities</p>
+          
+          <ul class="text-white/80 text-base sm:text-lg space-y-2 mb-10 hero-text-in-d2 max-w-sm mx-auto lg:mx-0 text-left w-max">
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> 50+ Active Jobs</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> 20+ Hiring Companies</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Fast Application Process</li>
+          </ul>
+
+          <div class="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 hero-text-in-d3">
+            <a href="https://api.whatsapp.com/send?phone=6593752892&text=Hi%2C%20I%20am%20looking%20for%20a%20job" target="_blank" rel="noopener noreferrer" class="cta-btn-glow btn-shine btn-glow-orange bg-[#25D366] hover:bg-[#1EBE5A] text-white px-8 py-3.5 rounded-xl font-bold text-base cursor-pointer w-full sm:w-auto text-center inline-flex justify-center items-center gap-2 transition-colors duration-200">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.12 1.522 5.857L.055 23.456a.75.75 0 00.917.918l5.599-1.467A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.958 9.958 0 01-5.383-1.572l-.386-.232-3.327.872.887-3.24-.254-.404A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+              WhatsApp Apply
+            </a>
+            <a href="#featured" class="btn-outline border-white/40 text-white hover:bg-white/10 hover:text-white px-8 py-3.5 rounded-xl font-semibold text-base cursor-pointer w-full sm:w-auto text-center">
+              Browse Jobs
+            </a>
+          </div>
+        </div>
+        <div class="hidden lg:flex justify-center hero-img-in">
+          <img src="./hero-illustration.png" alt="Team connecting talent with opportunity" class="w-full max-w-md drop-shadow-2xl hero-float">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SEARCH JOBS ============ -->
+  <section class="relative z-20 -mt-12 sm:-mt-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-xl shadow-primary/10 border border-border p-6 sm:p-8 card-shine fade-up">
+      <form id="search-form" class="flex flex-col md:flex-row gap-4" onsubmit="event.preventDefault(); window.clearCategoryUI(); window.filterJobs(null);">
+        <div class="flex-1">
+          <label class="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Keyword</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input id="search-keyword" type="text" placeholder="Job title or skill" class="w-full pl-10 pr-4 py-3 bg-surface border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm">
+          </div>
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Location</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+            <select id="search-location" class="w-full pl-10 pr-4 py-3 bg-surface border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm appearance-none cursor-pointer">
+              <option value="">All Singapore</option>
+              <option value="singapore">Singapore (General)</option>
+              <option value="central">Central</option>
+              <option value="hybrid">Hybrid / Remote</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Industry</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            </div>
+            <select id="search-industry" class="w-full pl-10 pr-4 py-3 bg-surface border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm appearance-none cursor-pointer">
+              <option value="">All Industries</option>
+              <option value="luxury">Luxury Retail</option>
+              <option value="tech">Technology / AI</option>
+              <option value="data">Data / Engineering</option>
+              <option value="management">Project Management</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex items-end">
+          <button type="submit" class="w-full md:w-auto btn-primary px-8 py-3 rounded-xl font-bold text-sm h-[46px] flex items-center justify-center btn-ripple">
+            Find Jobs
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ BROWSE BY CATEGORY ============ -->
+  <section class="pt-16 pb-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 fade-up">
+        <h3 class="font-heading font-bold text-2xl text-text-primary">Browse By Category</h3>
+      </div>
+      <div class="flex flex-wrap justify-center gap-4 fade-up">
+        <button id="btn-category-luxury" onclick="window.filterByCategory('luxury')" class="category-btn flex items-center gap-3 bg-surface hover:bg-primary hover:text-white text-text-primary border border-border px-6 py-3.5 rounded-2xl transition-all duration-300 card-hover cursor-pointer group">
+          <span class="text-primary group-hover:text-white group-hover:scale-110 transition-all flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 2l8.5 7-8.5 13L3.5 9 12 2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 2v20M3.5 9h17"></path></svg>
+          </span>
+          <span class="font-semibold text-sm">Luxury Retail</span>
+        </button>
+        <button id="btn-category-tech" onclick="window.filterByCategory('tech')" class="category-btn flex items-center gap-3 bg-surface hover:bg-primary hover:text-white text-text-primary border border-border px-6 py-3.5 rounded-2xl transition-all duration-300 card-hover cursor-pointer group">
+          <span class="text-primary group-hover:text-white group-hover:scale-110 transition-all flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          </span>
+          <span class="font-semibold text-sm">Technology</span>
+        </button>
+        <button id="btn-category-sales" onclick="window.filterByCategory('sales')" class="category-btn flex items-center gap-3 bg-surface hover:bg-primary hover:text-white text-text-primary border border-border px-6 py-3.5 rounded-2xl transition-all duration-300 card-hover cursor-pointer group">
+          <span class="text-primary group-hover:text-white group-hover:scale-110 transition-all flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 7h8v8M21 7l-8.5 8.5-5-5L2 16"></path></svg>
+          </span>
+          <span class="font-semibold text-sm">Sales</span>
+        </button>
+        <button id="btn-category-design" onclick="window.filterByCategory('design')" class="category-btn flex items-center gap-3 bg-surface hover:bg-primary hover:text-white text-text-primary border border-border px-6 py-3.5 rounded-2xl transition-all duration-300 card-hover cursor-pointer group">
+          <span class="text-primary group-hover:text-white group-hover:scale-110 transition-all flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75c1.238 0 2.25-1.012 2.25-2.25a.75.75 0 00-.75-.75h-.75a3 3 0 01-3-3v-.75a.75.75 0 01.75-.75h6c2.898 0 5.25-2.352 5.25-5.25C21.75 6.615 17.385 2.25 12 2.25z"></path><circle cx="7.5" cy="10.5" r="1.5" fill="currentColor"></circle><circle cx="10.5" cy="6.75" r="1.5" fill="currentColor"></circle><circle cx="14.25" cy="7.5" r="1.5" fill="currentColor"></circle></svg>
+          </span>
+          <span class="font-semibold text-sm">Design</span>
+        </button>
+        <button id="btn-category-hybrid" onclick="window.filterByCategory('hybrid')" class="category-btn flex items-center gap-3 bg-surface hover:bg-primary hover:text-white text-text-primary border border-border px-6 py-3.5 rounded-2xl transition-all duration-300 card-hover cursor-pointer group">
+          <span class="text-primary group-hover:text-white group-hover:scale-110 transition-all flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 22V12h6v10"></path></svg>
+          </span>
+          <span class="font-semibold text-sm">Work From Home</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SEARCH RESULTS ============ -->
+  <section id="search-results-section" class="py-16 bg-white border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 fade-up">
+        <h3 id="search-results-title" class="font-heading font-bold text-3xl text-text-primary">All Open Positions</h3>
+        <p class="text-text-muted mt-2" id="search-results-count"></p>
+      </div>
+      <div id="search-results-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Results injected by JS -->
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how-it-works" class="py-24 sm:py-32 bg-gradient-to-b from-white via-blue-50/40 to-white relative overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 left-0 w-72 h-72 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2 bg-shape-float-1"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-secondary/5 rounded-full translate-x-1/3 translate-y-1/3 bg-shape-float-2"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto mb-20 fade-up">
+        <p class="text-secondary font-semibold text-sm uppercase tracking-widest mb-3">Simple Process</p>
+        <h2 class="font-heading font-bold text-4xl sm:text-5xl mb-5 text-glow">
+          <span class="animated-gradient-primary">Your </span><span class="animated-gradient-secondary">Career </span><span class="animated-gradient-accent">Journey</span><br class="hidden sm:block">
+          <span class="animated-gradient-dark">Starts </span><span class="animated-gradient-primary">Here</span>
+        </h2>
+        <p class="text-text-muted text-lg sm:text-xl leading-relaxed">Three easy steps to land your next role in Singapore</p>
+        <div class="flex items-center justify-center gap-1.5 mt-5 dot-pulse">
+          <span class="w-3 h-3 rounded-full bg-primary"></span>
+          <span class="w-10 h-1.5 rounded-full bg-secondary"></span>
+          <span class="w-3 h-3 rounded-full bg-accent"></span>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 lg:gap-10">
+        <!-- Step 1 -->
+        <div class="group card-hover card-shine tilt-hover bg-white rounded-3xl overflow-hidden shadow-lg shadow-primary/5 border border-border/50 fade-up fade-up-d1 flex flex-col">
+          <div class="step-media overflow-hidden">
+            <img src="./step-explore.jpg" alt="Professionals exploring job opportunities on laptop" class="img-zoom">
+          </div>
+          <div class="p-7 sm:p-8 flex-1 flex flex-col">
+            <div class="mb-5 flex items-center gap-3">
+              <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-lg ring-1 ring-border icon-glow">
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+              </div>
+              <span class="font-heading font-bold text-sm uppercase tracking-widest text-primary">Step 1</span>
+            </div>
+            <h3 class="font-heading font-bold text-2xl text-text-primary mb-3">Explore Opportunities</h3>
+            <p class="text-text-muted leading-relaxed text-base flex-1">Browse curated job listings across technology, retail, and corporate sectors tailored to the Singapore market.</p>
+            <div class="mt-5 flex items-center text-primary font-semibold text-sm group-hover:translate-x-1 transition-transform">
+              Browse Jobs <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="group card-hover card-shine tilt-hover bg-white rounded-3xl overflow-hidden shadow-lg shadow-primary/5 border border-border/50 fade-up fade-up-d2 flex flex-col md:-translate-y-4">
+          <div class="step-media overflow-hidden">
+            <img src="./step-connect.jpg" alt="Professional handshake during job interview" class="img-zoom">
+          </div>
+          <div class="p-7 sm:p-8 flex-1 flex flex-col">
+            <div class="mb-5 flex items-center gap-3">
+              <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-lg ring-1 ring-border icon-glow">
+                <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+              </div>
+              <span class="font-heading font-bold text-sm uppercase tracking-widest text-secondary">Step 2</span>
+            </div>
+            <h3 class="font-heading font-bold text-2xl text-text-primary mb-3">Connect with Employers</h3>
+            <p class="text-text-muted leading-relaxed text-base flex-1">Access job details and reach out directly to hiring companies ready to bring in new talent.</p>
+            <div class="mt-5 flex items-center text-secondary font-semibold text-sm group-hover:translate-x-1 transition-transform">
+              Get Connected <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="group card-hover card-shine tilt-hover bg-white rounded-3xl overflow-hidden shadow-lg shadow-primary/5 border border-border/50 fade-up fade-up-d3 flex flex-col">
+          <div class="step-media overflow-hidden">
+            <img src="./step-next.jpg" alt="Confident professional ready for the next career step" class="img-zoom">
+          </div>
+          <div class="p-7 sm:p-8 flex-1 flex flex-col">
+            <div class="mb-5 flex items-center gap-3">
+              <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-lg ring-1 ring-border icon-glow">
+                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.58-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
+              </div>
+              <span class="font-heading font-bold text-sm uppercase tracking-widest text-accent">Step 3</span>
+            </div>
+            <h3 class="font-heading font-bold text-2xl text-text-primary mb-3">Take the Next Step</h3>
+            <p class="text-text-muted leading-relaxed text-base flex-1">Apply to positions that fit your skills and move forward in building your career with confidence.</p>
+            <div class="mt-5 flex items-center text-accent font-semibold text-sm group-hover:translate-x-1 transition-transform">
+              Apply Now <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ DYNAMIC JOB SECTIONS ============ -->
+  <div id="all-sections">
+    <!-- Sections loaded dynamically from Supabase. Static fallback below. -->
+
+    <!-- 1. Kee Hing Hung -->
+    <section id="featured" class="py-20 sm:py-28 bg-surface">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16 fade-up">
+          <p class="text-secondary font-semibold text-sm uppercase tracking-widest mb-3">Now Hiring</p>
+          <h2 class="font-heading font-bold text-3xl sm:text-4xl text-text-primary mb-4">Kee Hing Hung</h2>
+          <p class="text-text-muted text-lg leading-relaxed">Luxury retail positions now open. Explore exciting career paths in watch retail across Singapore.</p>
+          <span class="section-line"></span>
+        </div>
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+          
+          <div class="card-hover card-shine card-glow bg-white rounded-2xl border border-border overflow-hidden fade-left flex flex-col">
+            <div class="overflow-hidden poster-img-click" onclick="openLightbox('./green-hiring.jpg')"><img src="./green-hiring.jpg" alt="Luxury Watch Sales" class="w-full h-48 object-cover object-top img-zoom"></div>
+            <div class="p-6 flex flex-col flex-1">
+              <h4 class="font-heading font-bold text-xl text-text-primary mb-2">Luxury Watch Sales Executive</h4>
+              <div class="flex items-center gap-2 mb-4">
+                <span class="w-6 h-6 bg-primary text-white flex items-center justify-center rounded-full text-xs font-bold">K</span>
+                <span class="text-sm font-semibold text-primary">Kee Hing Hung</span>
+              </div>
+              <ul class="text-text-muted text-sm space-y-2 mb-5 border-b border-border pb-5">
+                <li class="flex items-center gap-2">📍 Singapore</li>
+                <li class="flex items-center gap-2">💰 SGD 4,000 - 9,000</li>
+                <li class="flex items-center gap-2">🏢 Full-Time</li>
+              </ul>
+              <div class="mb-6 flex-1">
+                <p class="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">Requirements:</p>
+                <ul class="list-disc list-inside text-sm text-text-muted space-y-1">
+                  <li>Retail experience</li>
+                  <li>Customer service skills</li>
+                </ul>
+              </div>
+              <a href="https://api.whatsapp.com/send?phone=6593752892&text=Hi%2C%20I%20am%20interested%20in%20the%20Luxury%20Watch%20Sales%20position" target="_blank" rel="noopener noreferrer" class="block w-full btn-primary btn-ripple btn-shine text-center py-2.5 rounded-lg font-semibold text-sm cursor-pointer mt-auto">Apply Now</a>
+            </div>
+          </div>
+
+          <div class="card-hover card-shine card-glow bg-white rounded-2xl border border-border overflow-hidden fade-up flex flex-col">
+            <div class="overflow-hidden poster-img-click" onclick="openLightbox('./rose-golden-hiring.jpg')"><img src="./rose-golden-hiring.jpg" alt="Luxury Watch Retail" class="w-full h-48 object-cover object-top img-zoom"></div>
+            <div class="p-6 flex flex-col flex-1">
+              <h4 class="font-heading font-bold text-xl text-text-primary mb-2">Luxury Retail Associate</h4>
+              <div class="flex items-center gap-2 mb-4">
+                <span class="w-6 h-6 bg-primary text-white flex items-center justify-center rounded-full text-xs font-bold">K</span>
+                <span class="text-sm font-semibold text-primary">Kee Hing Hung</span>
+              </div>
+              <ul class="text-text-muted text-sm space-y-2 mb-5 border-b border-border pb-5">
+                <li class="flex items-center gap-2">📍 Singapore</li>
+                <li class="flex items-center gap-2">💰 SGD 3,500 - 6,000</li>
+                <li class="flex items-center gap-2">🏢 Full-Time</li>
+              </ul>
+              <div class="mb-6 flex-1">
+                <p class="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">Requirements:</p>
+                <ul class="list-disc list-inside text-sm text-text-muted space-y-1">
+                  <li>Luxury brand knowledge</li>
+                  <li>Excellent communication</li>
+                </ul>
+              </div>
+              <a href="https://api.whatsapp.com/send?phone=6593752892&text=Hi%2C%20I%20am%20interested%20in%20the%20Luxury%20Watch%20Retail%20position" target="_blank" rel="noopener noreferrer" class="block w-full btn-primary btn-ripple btn-shine text-center py-2.5 rounded-lg font-semibold text-sm cursor-pointer mt-auto">Apply Now</a>
+            </div>
+          </div>
+
+          <div class="card-hover card-shine card-glow bg-white rounded-2xl border border-border overflow-hidden fade-right flex flex-col">
+            <div class="overflow-hidden poster-img-click" onclick="openLightbox('./blue-hiring.jpg')"><img src="./blue-hiring.jpg" alt="Boutique Manager" class="w-full h-48 object-cover object-top img-zoom"></div>
+            <div class="p-6 flex flex-col flex-1">
+              <h4 class="font-heading font-bold text-xl text-text-primary mb-2">Boutique Manager</h4>
+              <div class="flex items-center gap-2 mb-4">
+                <span class="w-6 h-6 bg-primary text-white flex items-center justify-center rounded-full text-xs font-bold">K</span>
+                <span class="text-sm font-semibold text-primary">Kee Hing Hung</span>
+              </div>
+              <ul class="text-text-muted text-sm space-y-2 mb-5 border-b border-border pb-5">
+                <li class="flex items-center gap-2">📍 Singapore</li>
+                <li class="flex items-center gap-2">💰 SGD 8,000 - 12,000</li>
+                <li class="flex items-center gap-2">🏢 Full-Time</li>
+              </ul>
+              <div class="mb-6 flex-1">
+                <p class="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">Requirements:</p>
+                <ul class="list-disc list-inside text-sm text-text-muted space-y-1">
+                  <li>Team leadership</li>
+                  <li>Sales strategy execution</li>
+                </ul>
+              </div>
+              <a href="https://api.whatsapp.com/send?phone=6593752892&text=Hi%2C%20I%20am%20interested%20in%20the%20Boutique%20Manager%20position" target="_blank" rel="noopener noreferrer" class="block w-full btn-primary btn-ripple btn-shine text-center py-2.5 rounded-lg font-semibold text-sm cursor-pointer mt-auto">Apply Now</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Merlion Technologies (last in order) -->
+    <section class="py-20 sm:py-28 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16 fade-up">
+          <p class="text-secondary font-semibold text-sm uppercase tracking-widest mb-3">Also Hiring</p>
+          <h2 class="font-heading font-bold text-3xl sm:text-4xl text-text-primary mb-4">Merlion Technologies</h2>
+          <p class="text-text-muted text-lg leading-relaxed">Join a leading Singapore tech company. Explore in-demand roles across engineering, data, and project management.</p>
+          <span class="section-line"></span>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <div class="card-hover card-shine card-glow bg-white rounded-2xl overflow-hidden border border-border fade-up fade-up-d1 flex flex-col">
+            <div class="h-48 overflow-hidden"><img src="./ml-engineer.jpeg" alt="ML Engineer" class="w-full h-full object-cover object-top img-zoom"></div>
+            <div class="p-6 flex flex-col flex-1">
+              <span class="inline-block bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-max">AI / ML</span>
+              <h4 class="font-heading font-bold text-lg text-text-primary leading-snug mb-2">Machine Learning Engineer</h4>
+              <div class="flex items-center gap-2 mb-4">
+                <span class="w-6 h-6 bg-blue-500 text-white flex items-center justify-center rounded-full text-xs font-bold">M</span>
+                <span class="text-sm font-semibold text-primary">Merlion Tech</span>
+              </div>
+              <ul class="text-text-muted text-sm space-y-2 mb-4 border-b border-border pb-4">
+                <li class="flex items-center gap-2">📍 Singapore / Hybrid</li>
+                <li class="flex items-center gap-2">💰 SGD 7k - 12k</li>
+              </ul>
+              <div class="mb-5 flex-1">
+                <div class="flex flex-wrap gap-2"><span class="text-xs bg-surface text-text-light px-2 py-1 rounded">Python</span><span class="text-xs bg-surface text-text-light px-2 py-1 rounded">MLOps</span></div>
+              </div>
+              <a href="https://api.whatsapp.com/send?phone=6593752892&text=Hi%2C%20I%20am%20interested%20in%20the%20ML%20Engineer%20position" target="_blank" rel="noopener noreferrer" class="block w-full btn-primary btn-ripple btn-shine text-center py-2.5 rounded-lg font-semibold text-sm cursor-pointer mt-auto">Apply Now</a>
+            </div>
+          </div>
+
+          <div class="card-hover card-shine card-glow bg-white rounded-2xl overflow-hidden border border-border fade-up fade-up-d2 flex flex-col">
+            <div class="h-48 overflow-hidden"><img src="./data-engineer.jpeg" alt="Data Engineer" class="w-full h-full object-cover object-top img-zoom"></div>
+            <div class="p-6 flex flex-col flex-1">
+              <span class="inline-block bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-max">Data</span>
+              <h4 class="font-heading font-bold text-lg text-text-primary leading-snug mb-2">Data Engineer</h4>
+              <div class="flex items-center gap-2 mb-4">
+                <span class="w-6 h-6 bg-blue-500 text-white flex items-center justify-center rounded-full text-xs font-bold">M</span>
+                <span class="text-sm font-semibold text-primary">Merlion Tech</span>
+              </div>
+              <ul class="text-text-muted text-sm space-y-2 mb-4 border-b border-border pb-4">
+                <li class="flex items-center gap-2">📍 Singapore</li>
+                <li class="flex items-center gap-2">💰 SGD 6k - 10k</li>
+              </ul>
+              <div class="mb-5 flex-1">
+                <div class="flex flex-wrap gap-2"><span class="text-xs bg-surface text-text-light px-2 py-1 rounded">SQL</span><span class="text-xs bg-surface text-text-light px-2 py-1 rounded">Spark</span></div>
+              </div>
+              <a href="https://api.whatsapp.com/send?phone=6593752892&text=Hi%2C%20I%20am%20interested%20in%20the%20Data%20Engineer%20position" target="_blank" rel="noopener noreferrer" class="block w-full btn-primary btn-ripple btn-shine text-center py-2.5 rounded-lg font-semibold text-sm cursor-pointer mt-auto">Apply Now</a>
+            </div>
+          </div>
+
+          <div class="card-hover card-shine card-glow bg-white rounded-2xl overflow-hidden border border-border fade-up fade-up-d3 flex flex-col">
+            <div class="h-48 overflow-hidden"><img src="./it-pm.jpeg" alt="IT Project Manager" class="w-full h-full object-cover object-top img-zoom"></div>
+            <div class="p-6 flex flex-col flex-1">
+              <span class="inline-block bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-max">Management</span>
+              <h4 class="font-heading font-bold text-lg text-text-primary leading-snug mb-2">IT Project Manager</h4>
+              <div class="flex items-center gap-2 mb-4">
+                <span class="w-6 h-6 bg-blue-500 text-white flex items-center justify-center rounded-full text-xs font-bold">M</span>
+                <span class="text-sm font-semibold text-primary">Merlion Tech</span>
+              </div>
+              <ul class="text-text-muted text-sm space-y-2 mb-4 border-b border-border pb-4">
+                <li class="flex items-center gap-2">📍 Singapore</li>
+                <li class="flex items-center gap-2">💰 SGD 8k - 13k</li>
+              </ul>
+              <div class="mb-5 flex-1">
+                <div class="flex flex-wrap gap-2"><span class="text-xs bg-surface text-text-light px-2 py-1 rounded">Agile</span><span class="text-xs bg-surface text-text-light px-2 py-1 rounded">Scrum</span></div>
+              </div>
+              <a href="https://api.whatsapp.com/send?phone=6593752892&text=Hi%2C%20I%20am%20interested%20in%20the%20IT%20Project%20Manager%20position" target="_blank" rel="noopener noreferrer" class="block w-full btn-primary btn-ripple btn-shine text-center py-2.5 rounded-lg font-semibold text-sm cursor-pointer mt-auto">Apply Now</a>
+            </div>
+          </div>
+
+          <div class="card-hover card-shine card-glow bg-white rounded-2xl overflow-hidden border border-border fade-up fade-up-d4 flex flex-col">
+            <div class="h-48 overflow-hidden"><img src="./ba.jpeg" alt="Business Analyst" class="w-full h-full object-cover object-top img-zoom"></div>
+            <div class="p-6 flex flex-col flex-1">
+              <span class="inline-block bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-max">Product</span>
+              <h4 class="font-heading font-bold text-lg text-text-primary leading-snug mb-2">Business Analyst</h4>
+              <div class="flex items-center gap-2 mb-4">
+                <span class="w-6 h-6 bg-blue-500 text-white flex items-center justify-center rounded-full text-xs font-bold">M</span>
+                <span class="text-sm font-semibold text-primary">Merlion Tech</span>
+              </div>
+              <ul class="text-text-muted text-sm space-y-2 mb-4 border-b border-border pb-4">
+                <li class="flex items-center gap-2">📍 Singapore</li>
+                <li class="flex items-center gap-2">💰 SGD 5k - 9k</li>
+              </ul>
+              <div class="mb-5 flex-1">
+                <div class="flex flex-wrap gap-2"><span class="text-xs bg-surface text-text-light px-2 py-1 rounded">Jira</span><span class="text-xs bg-surface text-text-light px-2 py-1 rounded">SQL</span></div>
+              </div>
+              <a href="https://api.whatsapp.com/send?phone=6593752892&text=Hi%2C%20I%20am%20interested%20in%20the%20Business%20Analyst%20position" target="_blank" rel="noopener noreferrer" class="block w-full btn-primary btn-ripple btn-shine text-center py-2.5 rounded-lg font-semibold text-sm cursor-pointer mt-auto">Apply Now</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- ============ WHY CHOOSE JOBS4U ============ -->
+  <section class="py-20 sm:py-28 bg-surface">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="fade-up">
+          <p class="text-secondary font-semibold text-sm uppercase tracking-widest mb-3">Our Advantage</p>
+          <h2 class="font-heading font-bold text-3xl sm:text-4xl text-text-primary mb-6">Why Jobs4U?</h2>
+          <div class="space-y-4">
+            <div class="flex items-start gap-4">
+              <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-1">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <div>
+                <h4 class="font-heading font-semibold text-lg text-text-primary">Curated Singapore Jobs</h4>
+                <p class="text-text-muted text-sm mt-1">We handpick opportunities specifically for the Singapore market.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-1">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <div>
+                <h4 class="font-heading font-semibold text-lg text-text-primary">Direct Employer Connections</h4>
+                <p class="text-text-muted text-sm mt-1">Skip the middleman and connect directly with hiring managers.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-1">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <div>
+                <h4 class="font-heading font-semibold text-lg text-text-primary">Fast Response Time</h4>
+                <p class="text-text-muted text-sm mt-1">Apply via WhatsApp and get feedback faster than traditional portals.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-1">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <div>
+                <h4 class="font-heading font-semibold text-lg text-text-primary">Industry Specialists</h4>
+                <p class="text-text-muted text-sm mt-1">Experts in Luxury Retail and Technology recruitment.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-left relative">
+          <div class="absolute inset-0 bg-primary/5 rounded-3xl transform rotate-3"></div>
+          <img src="./hero-illustration.png" alt="Why Jobs4U" class="relative z-10 w-full max-w-md mx-auto drop-shadow-xl rounded-3xl bg-white p-4">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUCCESS STORIES ============ -->
+  <section class="py-20 sm:py-28 bg-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-2xl mx-auto mb-16 fade-up">
+        <p class="text-secondary font-semibold text-sm uppercase tracking-widest mb-3">Testimonials</p>
+        <h2 class="font-heading font-bold text-3xl sm:text-4xl text-text-primary mb-4">Success Stories</h2>
+        <span class="section-line"></span>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-surface p-8 rounded-3xl card-hover border border-border/50 fade-up fade-up-d1">
+          <div class="flex text-yellow-400 mb-4 text-xl">★★★★★</div>
+          <p class="text-text-muted italic mb-6">"Jobs4U connected me with a luxury retail role within 2 weeks. The WhatsApp application process was incredibly fast and smooth."</p>
+          <div class="flex items-center gap-4 border-t border-border pt-4">
+            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">S</div>
+            <div>
+              <p class="font-heading font-semibold text-text-primary text-sm">Sarah Lim</p>
+              <p class="text-text-muted text-xs">Placed as Boutique Manager</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-surface p-8 rounded-3xl card-hover border border-border/50 fade-up fade-up-d2">
+          <div class="flex text-yellow-400 mb-4 text-xl">★★★★★</div>
+          <p class="text-text-muted italic mb-6">"I found my current ML Engineer role through this platform. The direct connection to the hiring team at Merlion made a huge difference."</p>
+          <div class="flex items-center gap-4 border-t border-border pt-4">
+            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">J</div>
+            <div>
+              <p class="font-heading font-semibold text-text-primary text-sm">Jason T.</p>
+              <p class="text-text-muted text-xs">Placed as ML Engineer</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-surface p-8 rounded-3xl card-hover border border-border/50 fade-up fade-up-d3">
+          <div class="flex text-yellow-400 mb-4 text-xl">★★★★★</div>
+          <p class="text-text-muted italic mb-6">"Highly recommended for both job seekers and employers. The curated job cards make it so easy to see salary ranges and requirements."</p>
+          <div class="flex items-center gap-4 border-t border-border pt-4">
+            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold">A</div>
+            <div>
+              <p class="font-heading font-semibold text-text-primary text-sm">Amanda W.</p>
+              <p class="text-text-muted text-xs">Placed as IT Project Manager</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOR EMPLOYERS ============ -->
+  <section class="py-20 sm:py-28 bg-primary text-white relative overflow-hidden">
+    <div class="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-white/5 to-transparent pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="fade-right">
+          <p class="text-secondary font-semibold text-sm uppercase tracking-widest mb-3">For Employers</p>
+          <h2 class="font-heading font-bold text-3xl sm:text-4xl mb-4">Hiring? Find Qualified Candidates Faster.</h2>
+          <p class="text-white/80 text-lg leading-relaxed mb-8">Access our growing network of active job seekers in Singapore. Post your vacancy and connect with top talent directly.</p>
+          <div class="bg-white/10 rounded-2xl p-6 border border-white/20 mb-8 max-w-sm">
+            <p class="text-xl font-bold mb-1">Post a job from <span class="text-secondary">SGD 99</span></p>
+            <p class="text-sm text-white/70">Includes WhatsApp direct-apply integration</p>
+          </div>
+          <a href="mailto:hr@jobs4u.sg?subject=Employer%20Inquiry" class="btn-primary px-8 py-4 rounded-xl font-bold text-base inline-block cursor-pointer btn-ripple btn-shine shadow-xl shadow-black/20">
+            Contact Us to Post a Job
+          </a>
+        </div>
+        <div class="hidden md:block fade-left">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm border border-white/20 transform translate-y-8">
+              <div class="text-3xl mb-3">🎯</div>
+              <h4 class="font-bold text-lg mb-1">Targeted Reach</h4>
+              <p class="text-sm text-white/70">Reach candidates specifically in Tech and Luxury Retail.</p>
+            </div>
+            <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm border border-white/20">
+              <div class="text-3xl mb-3">⚡</div>
+              <h4 class="font-bold text-lg mb-1">Fast Matching</h4>
+              <p class="text-sm text-white/70">Get applications sent directly to your WhatsApp or Email.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CANDIDATE REGISTRATION ============ -->
+  <section class="py-20 sm:py-28 bg-surface">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-3xl shadow-xl shadow-primary/5 border border-border/50 p-8 sm:p-12 fade-up relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-secondary/5 rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
+        
+        <div class="text-center mb-10 relative z-10">
+          <h2 class="font-heading font-bold text-3xl text-text-primary mb-4">Join Our Talent Pool</h2>
+          <p class="text-text-muted text-lg">Not actively looking? Drop your resume and we'll contact you when the perfect opportunity arises.</p>
+        </div>
+        
+        <form class="space-y-6 relative z-10" onsubmit="event.preventDefault(); alert('Registration submitted successfully! We will be in touch.');">
+          <div class="grid sm:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-semibold text-text-primary mb-2">Full Name</label>
+              <input type="text" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-text-primary mb-2">Email Address</label>
+              <input type="email" required class="w-full px-4 py-3 bg-surface border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-text-primary mb-2">Upload Resume (PDF, DOCX)</label>
+            <div class="w-full px-4 py-6 bg-surface border-2 border-dashed border-border rounded-xl text-center hover:bg-gray-50 transition-colors cursor-pointer">
+              <svg class="w-8 h-8 text-text-light mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+              <span class="text-sm text-text-muted font-medium">Click to upload or drag and drop</span>
+              <input type="file" accept=".pdf,.doc,.docx" class="hidden">
+            </div>
+          </div>
+          <button type="submit" class="w-full btn-primary px-8 py-4 rounded-xl font-bold text-base cursor-pointer btn-ripple btn-shine shadow-lg">
+            Register Now
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ SECTION ============ -->
+  <section class="py-20 sm:py-28 bg-white border-t border-border/50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16 fade-up">
+        <h2 class="font-heading font-bold text-3xl sm:text-4xl text-text-primary mb-4">Frequently Asked Questions</h2>
+        <span class="section-line"></span>
+      </div>
+      
+      <div class="space-y-4 fade-up">
+        <!-- FAQ Item 1 -->
+        <div class="border border-border rounded-2xl overflow-hidden bg-surface group transition-colors hover:border-primary">
+          <div class="px-6 py-5 flex items-center justify-between cursor-pointer">
+            <h4 class="font-semibold text-text-primary">How much does it cost to apply?</h4>
+            <span class="text-primary font-bold group-hover:scale-110 transition-transform">Free</span>
+          </div>
+        </div>
+        
+        <!-- FAQ Item 2 -->
+        <div class="border border-border rounded-2xl overflow-hidden bg-surface group transition-colors hover:border-primary">
+          <div class="px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between cursor-pointer gap-2">
+            <h4 class="font-semibold text-text-primary">Can foreigners apply?</h4>
+            <span class="text-text-muted font-medium text-sm bg-white px-3 py-1 rounded-lg border border-border shadow-sm">Depends on employer requirements</span>
+          </div>
+        </div>
+
+        <!-- FAQ Item 3 -->
+        <div class="border border-border rounded-2xl overflow-hidden bg-surface group transition-colors hover:border-primary">
+          <div class="px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between cursor-pointer gap-2">
+            <h4 class="font-semibold text-text-primary">How long does the process take?</h4>
+            <span class="text-text-muted font-medium text-sm bg-white px-3 py-1 rounded-lg border border-border shadow-sm">Usually 1–2 weeks</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta-section" class="py-24 sm:py-32 cta-gradient relative overflow-hidden">
+    <!-- Floating orbs -->
+    <div class="orb orb-1 w-72 h-72 bg-white/5 top-[-60px] left-[-40px]" aria-hidden="true"></div>
+    <div class="orb orb-2 w-96 h-96 bg-white/[0.03] bottom-[-80px] right-[-60px]" aria-hidden="true"></div>
+    <div class="orb orb-3 w-40 h-40 bg-white/[0.06] top-[20%] right-[15%]" aria-hidden="true"></div>
+    <div class="orb orb-4 w-56 h-56 bg-white/[0.04] bottom-[10%] left-[10%]" aria-hidden="true"></div>
+    <div class="orb orb-5 w-24 h-24 bg-white/[0.08] top-[60%] right-[40%]" aria-hidden="true"></div>
+
+    <!-- Floating particles (generated by JS) -->
+    <div id="cta-particles" class="absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center relative z-10">
+      <h2 class="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl cta-title mb-6 cta-animate-in">Start Your Next Career Move Today</h2>
+      <p class="text-white/80 text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl mx-auto cta-animate-in-delay">
+        Take the next step with confidence by exploring opportunities tailored to your skills and goals. Jobs4U helps you connect with the right employers in Singapore.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 cta-animate-in-delay2">
+        <a href="https://api.whatsapp.com/send?phone=6593752892&text=Hi%2C%20I%20want%20to%20explore%20job%20opportunities" target="_blank" rel="noopener noreferrer" class="cta-btn-glow btn-shine btn-glow-orange bg-secondary hover:bg-cta-hover text-white px-8 py-4 rounded-xl font-bold text-base cursor-pointer inline-flex items-center gap-3 w-full sm:w-auto justify-center transition-colors duration-200">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.12 1.522 5.857L.055 23.456a.75.75 0 00.917.918l5.599-1.467A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.958 9.958 0 01-5.383-1.572l-.386-.232-3.327.872.887-3.24-.254-.404A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Chat on WhatsApp
+        </a>
+        <a href="mailto:hr@jobs4u.sg" class="btn-outline border-2 border-white/50 text-white hover:bg-white hover:text-primary px-8 py-4 rounded-xl font-semibold text-base cursor-pointer inline-flex items-center gap-3 w-full sm:w-auto justify-center transition-all duration-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+          Send an Email
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-primary py-12 sm:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+
+        <!-- Brand -->
+        <div class="sm:col-span-2 lg:col-span-1 footer-col" style="transition-delay:0s">
+          <div class="mb-4">
+            <img src="./logo-new.jpg" alt="Jobs4U.sg" class="h-10 w-auto rounded bg-white p-1">
+          </div>
+          <p class="text-white/60 text-sm leading-relaxed">Connecting talent with opportunity across Singapore's technology and luxury retail sectors.</p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-col" style="transition-delay:0.1s">
+          <h4 class="font-heading font-semibold text-white text-sm mb-4">Quick Links</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#featured" class="text-white/60 hover:text-white transition-colors text-sm cursor-pointer footer-link">Browse Jobs</a></li>
+            <li><a href="#candidate-registration" class="text-white/60 hover:text-white transition-colors text-sm cursor-pointer footer-link">Submit Resume</a></li>
+            <li><a href="#employers" class="text-white/60 hover:text-white transition-colors text-sm cursor-pointer footer-link">Employers</a></li>
+            <li><a href="#contact" class="text-white/60 hover:text-white transition-colors text-sm cursor-pointer footer-link">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Industries -->
+        <div class="footer-col" style="transition-delay:0.2s">
+          <h4 class="font-heading font-semibold text-white text-sm mb-4">Industries</h4>
+          <ul class="space-y-2.5">
+            <li><span class="text-white/60 text-sm">Technology</span></li>
+            <li><span class="text-white/60 text-sm">Luxury Retail</span></li>
+            <li><span class="text-white/60 text-sm">Corporate</span></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="footer-col" style="transition-delay:0.3s">
+          <h4 class="font-heading font-semibold text-white text-sm mb-4">Contact Us</h4>
+          <ul class="space-y-2.5">
+            <li>
+              <a href="https://api.whatsapp.com/send?phone=6593752892&text=" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-white transition-colors text-sm cursor-pointer inline-flex items-center gap-2">
+                <svg class="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.12 1.522 5.857L.055 23.456a.75.75 0 00.917.918l5.599-1.467A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+                +65 9375 2892
+              </a>
+            </li>
+            <li>
+              <a href="mailto:hr@jobs4u.sg" class="text-white/60 hover:text-white transition-colors text-sm cursor-pointer inline-flex items-center gap-2">
+                <svg class="w-4 h-4 text-secondary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                hr@jobs4u.sg
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="border-t border-white/10 pt-8 text-center">
+        <p class="text-white/40 text-sm">2026 &copy; Jobs4U.sg. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ============ FLOATING WHATSAPP BUTTON ============ -->
+  <a href="https://api.whatsapp.com/send?phone=6593752892&text=" target="_blank" rel="noopener noreferrer"
+     class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] hover:bg-[#1EBE5A] rounded-full flex items-center justify-center shadow-lg shadow-[#25D366]/30 transition-all duration-200 hover:scale-110 cursor-pointer fab-animate"
+     aria-label="Chat on WhatsApp">
+    <svg class="w-7 h-7 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.12 1.522 5.857L.055 23.456a.75.75 0 00.917.918l5.599-1.467A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.958 9.958 0 01-5.383-1.572l-.386-.232-3.327.872.887-3.24-.254-.404A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+  </a>
+
+
+  <!-- ============ SCRIPTS ============ -->
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('active');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+    });
+    // Close mobile menu on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Navbar shadow on scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    }, { passive: true });
+
+    // Scroll reveal observer (handles all animated elements)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-in, .section-line, .icon-bounce, .footer-col').forEach(el => observer.observe(el));
+
+    // Counter count-up animation
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.target);
+          const duration = 1500;
+          const start = performance.now();
+          function tick(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.floor(eased * target);
+            if (progress < 1) requestAnimationFrame(tick);
+            else el.textContent = target;
+          }
+          requestAnimationFrame(tick);
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.counter-num[data-target]').forEach(el => counterObserver.observe(el));
+
+
+
+    // Floating particles generator (shared)
+    function spawnParticles(containerId, count) {
+      const container = document.getElementById(containerId);
+      if (!container || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 4 + 2;
+        const x = Math.random() * 100;
+        const duration = Math.random() * 8 + 6;
+        const delay = Math.random() * 6;
+        Object.assign(p.style, {
+          width: size + 'px',
+          height: size + 'px',
+          left: x + '%',
+          bottom: '-10px',
+          opacity: Math.random() * 0.5 + 0.1,
+          animation: `particle-rise ${duration}s ${delay}s linear infinite`
+        });
+        container.appendChild(p);
+      }
+    }
+    spawnParticles('hero-particles', 15);
+    spawnParticles('cta-particles', 20);
+
+    // Particle keyframes (injected once)
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!document.getElementById('particle-style')) {
+        const style = document.createElement('style');
+        style.id = 'particle-style';
+        style.textContent = `
+          @keyframes particle-rise {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.1; }
+            100% { transform: translateY(-500px) translateX(${Math.random() > 0.5 ? '' : '-'}40px); opacity: 0; }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    })();
+
+    // ======= SUPABASE DYNAMIC CONTENT =======
+    (async function loadFromSupabase() {
+      const SB_URL = 'https://xxwtocupkpuzcjcwhyzl.supabase.co';
+      const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4d3RvY3Vwa3B1emNqY3doeXpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNjMzMTUsImV4cCI6MjA5NDczOTMxNX0.EhHNFoOCM6_N2knP4G0_6ofBH-4Dw23SsIy9Q7M8svw';
+
+      try {
+        const sb = window.supabase.createClient(SB_URL, SB_KEY, {
+          auth: { detectSessionInUrl: false, flowType: 'implicit' }
+        });
+
+        function imgUrl(path) {
+          if (!path) return '';
+          if (path.startsWith('http')) return path;
+          // Try local file first, fall back to Supabase storage
+          return `./${path}`;
+        }
+
+        function imgUrlSB(path) {
+          if (!path) return '';
+          if (path.startsWith('http')) return path;
+          return `${SB_URL}/storage/v1/object/public/posters/${path}`;
+        }
+
+        // Load sections
+        const { data: sections } = await sb
+          .from('sections').select('*')
+          .eq('active', true)
+          .order('sort_order');
+
+        // Load all active posters
+        const { data: allPosters } = await sb
+          .from('posters').select('*')
+          .eq('active', true)
+          .order('sort_order');
+
+        if (sections && sections.length > 0 && allPosters) {
+          const container = document.getElementById('all-sections');
+          const bgClasses = ['bg-surface', 'bg-white'];
+          const delays = ['fade-up-d1','fade-up-d2','fade-up-d3','fade-up-d4'];
+          const labels = ['Now Hiring', 'Also Hiring', 'Open Positions', 'Opportunities', 'Careers'];
+
+          container.innerHTML = sections.map((sec, si) => {
+            const posters = allPosters.filter(p => p.section === sec.slug);
+            if (posters.length === 0) return '';
+
+            const posterCards = posters.map((p, i) => {
+              const waLink = `https://api.whatsapp.com/send?phone=6593752892&text=${encodeURIComponent(p.whatsapp_text || '')}`;
+              const src = imgUrl(p.image_url);
+              const srcFallback = imgUrlSB(p.image_url);
+              const hasTags = p.tags && p.tags.length > 0 && p.tags[0] !== '';
+              const hasDesc = p.description && p.description.trim() !== '';
+              const hasInfo = p.recruitment_info && p.recruitment_info.trim() !== '';
+              const isDetailed = hasTags || hasDesc || hasInfo;
+
+              const tags = isDetailed ? (p.tags || []).filter(Boolean).map(t => `<span class="text-xs bg-surface text-text-light px-2 py-1 rounded">${t}</span>`).join('') : '';
+
+              // Format recruitment_info: convert newlines to HTML
+              const infoHtml = hasInfo ? p.recruitment_info.replace(/\n/g, '<br>') : '';
+
+              return `
+                <div class="card-hover card-shine card-glow bg-white rounded-2xl overflow-hidden border border-border fade-up flex flex-col ${delays[i % 4]}">
+                  <div class="overflow-hidden poster-img-click" onclick="openLightbox(this.querySelector('img').src)">
+                    <img src="${src}" alt="${p.title}" class="w-full h-auto img-zoom"
+                         onerror="if(!this.dataset.retry){this.dataset.retry='1';this.src='${srcFallback}'}else{this.parentElement.innerHTML='<div class=\\'py-20 bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center\\'><span class=\\'text-slate-300 text-sm\\'>No Image</span></div>'}">
+                  </div>
+                  <div class="p-6 space-y-3">
+                    ${hasTags ? `<span class="inline-block bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1 rounded-full">${p.tags[0]}</span>` : ''}
+                    <h4 class="font-heading font-semibold text-lg text-text-primary leading-snug">${p.title}</h4>
+                    ${hasDesc ? `<p class="text-text-muted text-sm leading-relaxed">${p.description}</p>` : ''}
+                    ${hasInfo ? `<div class="bg-surface rounded-lg p-4 text-sm text-text-muted leading-relaxed border-l-3 border-secondary">${infoHtml}</div>` : ''}
+                    ${tags ? `<div class="flex flex-wrap gap-2">${tags}</div>` : ''}
+                    <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="block w-full btn-primary btn-ripple btn-shine text-center py-2.5 rounded-lg font-semibold text-sm cursor-pointer">Apply Now</a>
+                  </div>
+                </div>`;
+            }).join('');
+
+            const cols = Math.min(posters.length, 4);
+            let gridCols, gridWrapper;
+            if (cols === 1) {
+              gridCols = 'grid grid-cols-1 gap-6 max-w-sm mx-auto';
+              gridWrapper = '';
+            } else if (cols === 2) {
+              gridCols = 'grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto';
+              gridWrapper = '';
+            } else if (cols === 3) {
+              gridCols = 'grid sm:grid-cols-2 md:grid-cols-3 gap-6';
+              gridWrapper = '';
+            } else {
+              gridCols = 'grid sm:grid-cols-2 lg:grid-cols-4 gap-6';
+              gridWrapper = '';
+            }
+
+            const sectionId = si === 0 ? 'id="featured"' : '';
+            return `
+              <section ${sectionId} class="py-20 sm:py-28 ${bgClasses[si % 2]}">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div class="text-center max-w-2xl mx-auto mb-16 fade-up">
+                    <p class="text-secondary font-semibold text-sm uppercase tracking-widest mb-3">${labels[si % labels.length]}</p>
+                    <h2 class="font-heading font-bold text-3xl sm:text-4xl text-text-primary mb-4">${sec.name}</h2>
+                    <span class="section-line"></span>
+                  </div>
+                  <div class="${gridCols}">${posterCards}</div>
+                </div>
+              </section>`;
+          }).join('');
+
+          // Re-observe all animated elements
+          container.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => observer.observe(el));
+          
+          if (typeof window.filterJobs === 'function') window.filterJobs(null, false);
+        }
+
+      } catch (e) {
+        console.log('Supabase not configured yet, using static content.', e);
+        if (typeof window.filterJobs === 'function') window.filterJobs(null, false);
+      }
+    })();
+  </script>
+
+  <!-- Lightbox for poster images -->
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img id="lightbox-img" src="" alt="Full size poster">
+  </div>
+  <script>
+    function openLightbox(src) {
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lightbox-img').src = src;
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    // Filtering logic
+    window.currentCategory = null;
+
+    window.clearCategoryUI = function() {
+      window.currentCategory = null;
+      document.querySelectorAll('.category-btn').forEach(btn => {
+         btn.classList.remove('bg-primary', 'text-white', 'border-primary');
+         btn.classList.add('bg-surface', 'text-text-primary');
+         const icon = btn.querySelector('span:first-child');
+         if (icon) {
+            icon.classList.remove('text-white');
+            icon.classList.add('text-primary');
+         }
+      });
+    };
+
+    window.filterJobs = function(category = null, doScroll = true) {
+      const keyword = document.getElementById('search-keyword')?.value.toLowerCase() || '';
+      const location = document.getElementById('search-location')?.value.toLowerCase() || '';
+      const industry = document.getElementById('search-industry')?.value.toLowerCase() || '';
+      
+      const jobCards = document.querySelectorAll('#featured .card-hover, #all-sections section .card-hover');
+      const resultsContainer = document.getElementById('search-results-container');
+      const resultsSection = document.getElementById('search-results-section');
+      const resultsCount = document.getElementById('search-results-count');
+      const resultsTitle = document.getElementById('search-results-title');
+      
+      // Reset any previously hidden original cards (to clean up old state)
+      jobCards.forEach(card => card.style.display = '');
+      document.querySelectorAll('#all-sections section').forEach(sec => sec.style.display = '');
+      
+      const isFiltering = category || keyword || location || industry;
+      
+      resultsContainer.innerHTML = ''; // Clear previous results
+      let matchCount = 0;
+      
+      jobCards.forEach(card => {
+        // Find matches based on text content
+        const text = card.textContent.toLowerCase();
+        let match = true;
+        
+        if (isFiltering) {
+          if (category) {
+            if (category === 'luxury' && !text.includes('luxury') && !text.includes('boutique')) match = false;
+            if (category === 'tech' && !text.includes('engineer') && !text.includes('analyst') && !text.includes('manager') && !text.includes('data')) match = false;
+            if (category === 'sales' && !text.includes('sales')) match = false;
+            if (category === 'design' && !text.includes('design')) match = false;
+            if (category === 'hybrid' && !text.includes('hybrid') && !text.includes('remote')) match = false;
+          } else {
+            if (keyword && !text.includes(keyword)) match = false;
+            if (location && !text.includes(location)) match = false;
+            if (industry && !text.includes(industry)) match = false;
+          }
+        }
+        
+        if (match) {
+          matchCount++;
+          const clone = card.cloneNode(true);
+          // Remove visible so it can be re-triggered
+          clone.classList.remove('visible'); 
+          clone.style.animationDelay = '0s'; // override cascade delays
+          clone.style.transitionDelay = `${(matchCount - 1) * 75}ms`; // Staggered delay
+          resultsContainer.appendChild(clone);
+          
+          // Trigger reflow and add visible class for animation
+          setTimeout(() => {
+            clone.classList.add('visible');
+          }, 10);
+        }
+      });
+      
+      // Update UI texts
+      if (isFiltering) {
+         if (resultsTitle) resultsTitle.textContent = 'Search Results';
+         if (resultsCount) {
+            if (matchCount > 0) {
+               resultsCount.textContent = `Found ${matchCount} matching job${matchCount > 1 ? 's' : ''}.`;
+            } else {
+               resultsCount.textContent = 'No jobs found matching your criteria.';
+            }
+         }
+      } else {
+         if (resultsTitle) resultsTitle.textContent = 'All Open Positions';
+         if (resultsCount) resultsCount.textContent = `Showing all ${matchCount} available role${matchCount !== 1 ? 's' : ''}.`;
+      }
+      
+      if (resultsSection) resultsSection.classList.remove('hidden');
+      
+      if (isFiltering && doScroll && resultsSection) {
+        // Smooth scroll to the results section slightly offset
+        const yOffset = -80; 
+        const y = resultsSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({top: y, behavior: 'smooth'});
+      }
+    };
+
+    window.filterByCategory = function(cat) {
+      document.getElementById('search-form')?.reset();
+      
+      if (window.currentCategory === cat) {
+         window.clearCategoryUI();
+      } else {
+         window.clearCategoryUI();
+         window.currentCategory = cat;
+         
+         const activeBtn = document.getElementById('btn-category-' + cat);
+         if (activeBtn) {
+            activeBtn.classList.add('bg-primary', 'text-white', 'border-primary');
+            activeBtn.classList.remove('bg-surface', 'text-text-primary');
+            const icon = activeBtn.querySelector('span:first-child');
+            if (icon) {
+               icon.classList.add('text-white');
+               icon.classList.remove('text-primary');
+            }
+         }
+      }
+      
+      window.filterJobs(window.currentCategory, true);
+    };
+
+  </script>
+</body>
+</html>
