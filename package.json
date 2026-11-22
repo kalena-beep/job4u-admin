@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-static.mjs"
+    "build": "node scripts/build-static.mjs",
+    "start": "node server.mjs"
   },
   "dependencies": {
     "dotenv": "^18.0.10",

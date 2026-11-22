@@ -14,8 +14,17 @@ const CV_DIR = path.resolve(
   process.env.CV_UPLOAD_DIR || path.resolve(__dirname, "../job4u/secure_uploads/cvs")
 );
 
+const SUPABASE_URL = (process.env.SUPABASE_URL || "").replace(/\/+$/, "");
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const DEFAULT_CV_BUCKET = process.env.SUPABASE_CV_BUCKET || "cvs";
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl:
+    process.env.DATABASE_URL?.includes("localhost") ||
+    process.env.DATABASE_URL?.includes("127.0.0.1")
+      ? false
+      : { rejectUnauthorized: false },
 });
 
 const activeTokens = new Set();
@@ -376,6 +385,39 @@ const server = http.createServer(async (req, res) => {
         return sendJson(res, 404, { message: "CV file not found." });
       }
 
+      const downloadName = (
+        app.cvFileName ||
+        path.basename(app.cvFilePath || "cv.pdf")
+      ).replace(/"/g, "");
+
+      // 1. Ambil dari Supabase Storage jika path mengarah ke bucket storage
+      const rawPath = String(app.cvFilePath || "").trim().replace(/^\/+/, "");
+      if (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY && rawPath) {
+        const parts = rawPath.split("/");
+        const bucket = parts.length >= 2 ? parts[0] : DEFAULT_CV_BUCKET;
+        const objectPath = parts.length >= 2 ? parts.slice(1).join("/") : rawPath;
+
+        const storageUrl = `${SUPABASE_URL}/storage/v1/object/${encodeURIComponent(bucket)}/${objectPath}`;
+        const storageRes = await fetch(storageUrl, {
+          headers: {
+            Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+            apikey: SUPABASE_SERVICE_ROLE_KEY,
+          },
+        });
+
+        if (storageRes.ok) {
+          const buffer = Buffer.from(await storageRes.arrayBuffer());
+          res.writeHead(200, {
+            "Content-Type":
+              storageRes.headers.get("content-type") || "application/octet-stream",
+            "Content-Disposition": `attachment; filename="${downloadName}"`,
+            "Content-Length": String(buffer.length),
+          });
+          return res.end(buffer);
+        }
+      }
+
+      // 2. Fallback ke disk lokal (untuk lamaran lama hasil tes lokal)
       const candidatePath = app.cvFilePath
         ? path.resolve(app.cvFilePath)
         : path.resolve(CV_DIR, path.basename(app.cvFileName));
@@ -385,20 +427,19 @@ const server = http.createServer(async (req, res) => {
 
       try {
         await fsp.access(safeFile, fs.constants.R_OK);
-        const downloadName = app.cvFileName || baseName;
         res.writeHead(200, {
           "Content-Type": "application/octet-stream",
-          "Content-Disposition": `attachment; filename="${downloadName.replace(/"/g, "")}"`,
+          "Content-Disposition": `attachment; filename="${downloadName}"`,
         });
         return fs.createReadStream(safeFile).pipe(res);
       } catch {
-        return sendJson(404, { message: "CV file missing on disk." });
+        return sendJson(res, 404, { message: "CV file missing on disk." });
       }
     }
 
     return sendJson(res, 404, { message: "API endpoint not found." });
   } catch (err) {
-    return sendJson(500, {
+    return sendJson(res, 500, {
       message: err instanceof Error ? err.message : "Internal server error",
     });
   }
